@@ -6,7 +6,7 @@ import torch.nn as nn
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 from torch.cuda.amp import GradScaler
-from torchvision.datasets import mnist
+from torchvision import datasets 
 from torchvision.transforms import ToTensor
 from torch.utils.data import DataLoader
 from save_plots import Logger
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     batch_size = 256
 
     model = 'LeNet' # LeNet, AlexNet, VGG
-    dataset = 'MNIST' # MNIST, CIFAR10
+    dataset = 'FashionMNIST' # FashionMNIST, CIFAR10
     experiment = 1
     path = os.path.join(os.getcwd(), 'experiments', model, dataset,'experiment-{}'.format(experiment))
 
@@ -50,10 +50,16 @@ if __name__ == '__main__':
     elif model == 'VGG':
         net = VGG().to(device) # Put on GPU
 
-    train_dataset = mnist.MNIST(root='./datasets/MNIST/train', train=True, transform = ToTensor())
-    test_dataset = mnist.MNIST(root='./datasets/MNIST/test', train=False, transform = ToTensor())
-    train_loader = DataLoader(train_dataset, batch_size = batch_size)
-    test_loader = DataLoader(test_dataset, batch_size = batch_size)
+    if dataset == 'FashionMNIST':
+        train_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/train', train = True, download = False, transform = ToTensor())
+        test_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/test', train = False, download = False, transform = ToTensor())
+        train_loader = DataLoader(train_dataset, batch_size = batch_size)
+        test_loader = DataLoader(test_dataset, batch_size = batch_size)
+    elif dataset == 'CIFAR10':
+        train_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/train', train = True, download = True, transform = ToTensor())
+        test_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/test', train = False, download = True, transform = ToTensor())
+        train_loader = DataLoader(train_dataset, batch_size = batch_size)
+        test_loader = DataLoader(test_dataset, batch_size = batch_size)
  
     # Optimzer and learning rate scheduler
     optimizer = torch.optim.SGD(net.parameters(), lr = learning_rate)

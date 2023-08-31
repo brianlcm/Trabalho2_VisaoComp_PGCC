@@ -92,8 +92,8 @@ def ploting_confusion_matrix(cf_matrix_abs, cf_matrix_rel, acc, checkpoint_save_
         'font.serif': ['Times']
     })
 
-    if dataset == 'MNIST':
-        classes_names = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    if dataset == 'FashionMNIST':
+        classes_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
     elif dataset == 'CIFAR10':
         classes_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
@@ -135,7 +135,7 @@ if __name__ == '__main__':
     # Build network (last epoch)
 
     model = 'LeNet' # LeNet, AlexNet, VGG
-    dataset = 'MNIST' # MNIST, Cifar-10
+    dataset = 'FashionMNIST' # FashionMNIST, Cifar-10
     experiment = 1
     path = os.path.join(os.getcwd(), 'experiments', model, dataset,'experiment-{}'.format(experiment))
 
