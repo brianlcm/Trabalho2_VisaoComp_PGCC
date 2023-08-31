@@ -23,22 +23,21 @@ class Logger:
     def get_logs(self):
         return self.acc_train, self.loss_train, self.acc_test, self.loss_test
 
-    def save_plts(self):
+    def save_plts(self, path):
         # Style
         mpl.style.use('seaborn')
         plt.rcParams.update({
-            'text.usetex': True,
+            'text.usetex': False,
             'font.family': 'serif',
             'font.serif': ['Times']
          })
         
         # Hyper-parameters
-        checkpoint_save_dir = os.path.join(os.getcwd(), 'checkpoints')
 
         num_epochs = len(self.acc_train)
  
-        acc_path = os.path.join(checkpoint_save_dir, 'acc.pdf')
-        loss_path = os.path.join(checkpoint_save_dir, 'loss.pdf')
+        acc_path = os.path.join(path, 'accuracy.pdf')
+        loss_path = os.path.join(path, 'loss.pdf')
 
         x_s = np.arange(1, num_epochs+1, 1) # Abscissa
         
@@ -59,10 +58,8 @@ class Logger:
         # y-axis configuration
         plt.ylabel('Accuracy', labelpad = 72, fontsize = 72)
         yticks = np.arange(0, 101, 20)
-        plt.yticks(yticks,  ['{}'.format(y) + r'\%' for y in yticks], fontsize = 60)
+        plt.yticks(yticks,  ['{}'.format(y) + r'%' for y in yticks], fontsize = 60)
         plt.ylim(0, 100)
-
-        plt.legend(loc = 'best', fontsize = 72, frameon = True)
 
         plt.savefig(acc_path, bbox_inches = 'tight', pad_inches = 0)
 
@@ -82,7 +79,7 @@ class Logger:
         # y-axis configuration
         plt.ylabel('Loss', labelpad = 72, fontsize = 72)
 
-        plt.yticks(yticks, ['{:.2E}'.format(Decimal(y)) for y in yticks], fontsize = 60)
+        plt.yticks(yticks, ['{:.2E}'.format(y) for y in yticks], fontsize = 60)
         plt.ylim(0, ax.get_yticks()[-1])
 
         plt.savefig(loss_path, bbox_inches = 'tight', pad_inches = 0)

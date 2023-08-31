@@ -11,11 +11,13 @@ from torchvision.transforms import ToTensor
 from torch.utils.data import DataLoader
 from save_plots import Logger
 from models.LeNet import LeNet
+from models.AlexNet import AlexNet
+from models.VGG import VGG
 from train_steps import train_steps, evaluate_steps
 
-def save(net, logger):
+def save(net, logger, path):
 
-    path = os.path.join(os.path.join(os.getcwd(), 'checkpoints', 'LeNet'), 'last-epoch.pt')
+    path = os.path.join(path, 'last-epoch.pt')
 
     # Logger and net dictionary
     checkpoint = {
@@ -31,8 +33,22 @@ if __name__ == '__main__':
     num_epochs = 5
     batch_size = 256
 
+    model = 'LeNet' # LeNet, AlexNet, VGG
+    dataset = 'MNIST' # MNIST, Cifar-10
+    experiment = 1
+    path = os.path.join(os.getcwd(), 'experiments', model, dataset,'experiment-{}'.format(experiment))
+
+    if not os.path.exists(path):
+            os.makedirs(path)
+
     logger = Logger()
-    net = LeNet().to(device) # Put on GPU
+    
+    if model == 'LeNet':
+        net = LeNet().to(device) # Put on GPU
+    elif model == 'AlexNet':
+        net = AlexNet().to(device) # Put on GPU
+    elif model == 'VGG':
+        net = VGG().to(device) # Put on GPU
 
     train_dataset = mnist.MNIST(root='./datasets/MNIST/train', train=True, transform = ToTensor())
     test_dataset = mnist.MNIST(root='./datasets/MNIST/test', train=False, transform = ToTensor())
@@ -66,5 +82,5 @@ if __name__ == '__main__':
     print('Finished training.\n')
 
     # Save last epoch net weights and all measures graphics
-    save(net, logger) 
-    logger.save_plts()
+    save(net, logger, path) 
+    logger.save_plts(path)
