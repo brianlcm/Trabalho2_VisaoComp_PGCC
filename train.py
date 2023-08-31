@@ -44,17 +44,18 @@ if __name__ == '__main__':
     logger = Logger()
     
     if model == 'LeNet':
-        net = LeNet().to(device) # Put on GPU
+        net = LeNet().to(device)
     elif model == 'AlexNet':
-        net = AlexNet().to(device) # Put on GPU
+        net = AlexNet().to(device)
     elif model == 'VGG':
-        net = VGG().to(device) # Put on GPU
+        net = VGG().to(device)
 
     if dataset == 'FashionMNIST':
         train_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/train', train = True, download = False, transform = ToTensor())
         test_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/test', train = False, download = False, transform = ToTensor())
         train_loader = DataLoader(train_dataset, batch_size = batch_size)
         test_loader = DataLoader(test_dataset, batch_size = batch_size)
+    
     elif dataset == 'CIFAR10':
         train_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/train', train = True, download = True, transform = ToTensor())
         test_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/test', train = False, download = True, transform = ToTensor())

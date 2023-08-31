@@ -7,7 +7,7 @@ import pandas as pd
 import seaborn as sb
 import torch
 import torch.nn.functional as F
-from torchvision.datasets import mnist
+from torchvision import datasets
 from torchvision.transforms import ToTensor
 from torch.utils.data import DataLoader
 
@@ -149,8 +149,13 @@ if __name__ == '__main__':
         net = VGG().to(device) # Put on GPU
 
     restore(net, logger, path)
+
+    if dataset == 'FashionMNIST':
+        test_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/test', train = False, download = False, transform = ToTensor())
+        test_loader = DataLoader(test_dataset)
     
-    test_dataset = mnist.MNIST(root='./datasets/MNIST/test', train=False, transform = ToTensor())
-    test_loader = DataLoader(test_dataset)
+    elif dataset == 'CIFAR10':
+        test_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/test', train = False, download = False, transform = ToTensor())
+        test_loader = DataLoader(test_dataset)
 
     evaluate(net, test_loader, dataset)
