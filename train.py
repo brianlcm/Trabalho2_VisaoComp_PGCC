@@ -29,12 +29,12 @@ def save(net, logger, path):
 
 if __name__ == '__main__':
     # Hyper-parameters
-    learning_rate = 0.001
-    num_epochs = 5
+    learning_rate = 1e-1
+    num_epochs = 100
     batch_size = 256
 
     model = 'LeNet' # LeNet, AlexNet, VGG
-    dataset = 'MNIST' # MNIST, Cifar-10
+    dataset = 'MNIST' # MNIST, CIFAR10
     experiment = 1
     path = os.path.join(os.getcwd(), 'experiments', model, dataset,'experiment-{}'.format(experiment))
 
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     test_loader = DataLoader(test_dataset, batch_size = batch_size)
  
     # Optimzer and learning rate scheduler
-    optimizer = torch.optim.SGD(net.parameters(), lr = learning_rate, momentum = 0.9, nesterov = True, weight_decay = 1e-4)
+    optimizer = torch.optim.SGD(net.parameters(), lr = learning_rate)
     
     # Loss function
     criterion = nn.CrossEntropyLoss()

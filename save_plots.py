@@ -4,7 +4,6 @@ import matplotlib as mpl
 import numpy as np
 import os
 
-from decimal import Decimal
 from matplotlib import pyplot as plt
 
 #%% LOGGER CLASS
@@ -22,6 +21,9 @@ class Logger:
 
     def get_logs(self):
         return self.acc_train, self.loss_train, self.acc_test, self.loss_test
+    
+    def restore_logs(self, logs):
+        self.acc_train, self.loss_train, self.acc_test, self.loss_test = logs
 
     def save_plts(self, path):
         # Style
