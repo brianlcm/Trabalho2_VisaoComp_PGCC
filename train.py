@@ -6,7 +6,7 @@ import torch.nn as nn
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 from torch.cuda.amp import GradScaler
-from torchvision import datasets 
+from torchvision import datasets, transforms
 from torchvision.transforms import ToTensor
 from torch.utils.data import DataLoader
 from save_plots import Logger
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     batch_size = 128
     model = 'LeNet' # LeNet, AlexNet, VGG
     dataset = 'FashionMNIST' # FashionMNIST, CIFAR10
-    experiment = 7
+    experiment = 9
     path = os.path.join(os.getcwd(), 'experiments', model, dataset,'experiment-{}'.format(experiment))
 
     if not os.path.exists(path):
@@ -48,6 +48,12 @@ if __name__ == '__main__':
         net = AlexNet().to(device)
     elif model == 'VGG':
         net = VGG().to(device)
+
+    #Define a transform to convert to images to tensor and normalize
+    transform = transforms.Compose([transforms.ToTensor(),
+                                    transforms.RandomHorizontalFlip(),
+                                    transforms.Normalize((0.5,),(0.5,),)]) # mean and std have to be sequences (e.g., tuples), 
+                                                                        # therefore we should add a comma after the values
 
     if dataset == 'FashionMNIST':
         train_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/train', train = True, download = False, transform = ToTensor())
