@@ -30,12 +30,11 @@ def save(net, logger, path):
 if __name__ == '__main__':
     # Hyper-parameters
     learning_rate = 1e-1
-    num_epochs = 100
-    batch_size = 256
-
+    num_epochs = 30
+    batch_size = 128
     model = 'LeNet' # LeNet, AlexNet, VGG
     dataset = 'FashionMNIST' # FashionMNIST, CIFAR10
-    experiment = 1
+    experiment = 7
     path = os.path.join(os.getcwd(), 'experiments', model, dataset,'experiment-{}'.format(experiment))
 
     if not os.path.exists(path):
@@ -83,7 +82,7 @@ if __name__ == '__main__':
         logger.acc_test.append(acc_test)
         logger.loss_test.append(loss_test)
 
-        print('Epoch {} | Train Acc. {:.2f}% | Test Acc. {:.2f}%\n'.format(epoch+1, acc_train, acc_test))
+        print('Epoch {} | Train Acc. {:.2f}% | Test Acc. {:.2f}% | Train Loss {:.5f}% | Test Loss {:.5f}%\n'.format(epoch+1, acc_train, acc_test, loss_train, loss_test))
         
         
     print('Finished training.\n')

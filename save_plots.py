@@ -4,6 +4,7 @@ import matplotlib as mpl
 import numpy as np
 import os
 
+from decimal import Decimal
 from matplotlib import pyplot as plt
 
 #%% LOGGER CLASS
@@ -41,6 +42,10 @@ class Logger:
         acc_path = os.path.join(path, 'accuracy.pdf')
         loss_path = os.path.join(path, 'loss.pdf')
 
+        # Max value of training and test loss
+        max_loss_train = max(self.loss_train)
+        max_loss_test = max(self.loss_test)
+
         x_s = np.arange(1, num_epochs+1, 1) # Abscissa
         
         #%% ACCURACY PLOT
@@ -63,12 +68,15 @@ class Logger:
         plt.yticks(yticks,  ['{}'.format(y) + r'%' for y in yticks], fontsize = 60)
         plt.ylim(0, 100)
 
+        plt.legend(loc = 'best', fontsize = 72, frameon = True)
+
         plt.savefig(acc_path, bbox_inches = 'tight', pad_inches = 0)
 
         #%% LOSS PLOT
 
         _, ax = plt.subplots(1, figsize = (40, 40))
         plt.plot(x_s, self.loss_train, label = 'Training Loss', color = 'red')
+        plt.plot(x_s, self.loss_test, label = 'Test Loss', color = 'green')
         
         plt.grid(True, color = 'white')
 
@@ -80,8 +88,13 @@ class Logger:
 
         # y-axis configuration
         plt.ylabel('Loss', labelpad = 72, fontsize = 72)
-
-        plt.yticks(yticks, ['{:.2E}'.format(y) for y in yticks], fontsize = 60)
+        if max_loss_train >= max_loss_test:
+            yticks = np.arange(0, max_loss_train + max_loss_train/5, max_loss_train/5)
+        else:
+            yticks = np.arange(0, max_loss_test + max_loss_test/5, max_loss_test/5)
+        plt.yticks(yticks, ['{:.2E}'.format(Decimal(y)) for y in yticks], fontsize = 60)
         plt.ylim(0, ax.get_yticks()[-1])
+
+        plt.legend(loc = 'best', fontsize = 72, frameon = True)
 
         plt.savefig(loss_path, bbox_inches = 'tight', pad_inches = 0)

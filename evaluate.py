@@ -136,7 +136,7 @@ if __name__ == '__main__':
 
     model = 'LeNet' # LeNet, AlexNet, VGG
     dataset = 'FashionMNIST' # FashionMNIST, Cifar-10
-    experiment = 1
+    experiment = 7
     path = os.path.join(os.getcwd(), 'experiments', model, dataset,'experiment-{}'.format(experiment))
 
     logger = Logger()
