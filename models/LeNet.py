@@ -6,7 +6,7 @@ class LeNet(nn.Module):
         
         super(LeNet, self).__init__()
         self.features = nn.Sequential(
-            nn.Conv2d(1, 6, 5),
+            nn.Conv2d(3, 6, 5),
             nn.ReLU(),
             nn.BatchNorm2d(6),
             nn.AvgPool2d(kernel_size=2, stride=2),
