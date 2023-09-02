@@ -2,12 +2,12 @@ from torch import nn
 
 class VGG(nn.Module):
 
-    def __init__(self, num_classes):
+    def __init__(self):
 
         super(VGG, self).__init__()
 
         self.block_1 = nn.Sequential(
-            nn.Conv2d(in_channels=3,
+            nn.Conv2d(in_channels=1,
                       out_channels=64,
                       kernel_size=(3, 3),
                       stride=(1, 1),

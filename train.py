@@ -31,10 +31,10 @@ if __name__ == '__main__':
     # Hyper-parameters
     learning_rate = 1e-1
     num_epochs = 30
-    batch_size = 128
+    batch_size = 256
     model = 'LeNet' # LeNet, AlexNet, VGG
-    dataset = 'FashionMNIST' # FashionMNIST, CIFAR10
-    experiment = 9
+    dataset = 'CIFAR10' # FashionMNIST, CIFAR10
+    experiment = 2
     path = os.path.join(os.getcwd(), 'experiments', model, dataset,'experiment-{}'.format(experiment))
 
     if not os.path.exists(path):
@@ -49,21 +49,30 @@ if __name__ == '__main__':
     elif model == 'VGG':
         net = VGG().to(device)
 
+    print(net)
+
+    '''
     #Define a transform to convert to images to tensor and normalize
     transform = transforms.Compose([transforms.ToTensor(),
                                     transforms.RandomHorizontalFlip(),
                                     transforms.Normalize((0.5,),(0.5,),)]) # mean and std have to be sequences (e.g., tuples), 
                                                                         # therefore we should add a comma after the values
+    '''
 
+    AlexTransform = transforms.Compose([
+        transforms.Resize((227, 227)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,))])
+    
     if dataset == 'FashionMNIST':
-        train_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/train', train = True, download = False, transform = ToTensor())
-        test_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/test', train = False, download = False, transform = ToTensor())
+        train_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/train', train = True, download = False, transform = AlexTransform)
+        test_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/test', train = False, download = False, transform = AlexTransform)
         train_loader = DataLoader(train_dataset, batch_size = batch_size)
         test_loader = DataLoader(test_dataset, batch_size = batch_size)
     
     elif dataset == 'CIFAR10':
-        train_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/train', train = True, download = True, transform = ToTensor())
-        test_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/test', train = False, download = True, transform = ToTensor())
+        train_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/train', train = True, download = False, transform = ToTensor())
+        test_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/test', train = False, download = False, transform = ToTensor())
         train_loader = DataLoader(train_dataset, batch_size = batch_size)
         test_loader = DataLoader(test_dataset, batch_size = batch_size)
  

@@ -17,7 +17,7 @@ class LeNet(nn.Module):
         )
 
         self.classifier = nn.Sequential(
-            nn.Linear(256, 120),
+            nn.Linear(400, 120),
             nn.ReLU(),
             nn.Linear(120, 84),
             nn.ReLU(),

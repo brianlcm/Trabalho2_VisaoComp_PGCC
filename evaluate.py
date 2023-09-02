@@ -135,8 +135,8 @@ if __name__ == '__main__':
     # Build network (last epoch)
 
     model = 'LeNet' # LeNet, AlexNet, VGG
-    dataset = 'FashionMNIST' # FashionMNIST, Cifar-10
-    experiment = 8
+    dataset = 'CIFAR10' # FashionMNIST, CIFAR10
+    experiment = 2
     path = os.path.join(os.getcwd(), 'experiments', model, dataset,'experiment-{}'.format(experiment))
 
     logger = Logger()
