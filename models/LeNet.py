@@ -14,10 +14,11 @@ class LeNet(nn.Module):
             nn.ReLU(),
             nn.BatchNorm2d(16),
             nn.AvgPool2d(kernel_size=2, stride=2),
+            nn.Dropout(0.50),
         )
 
         self.classifier = nn.Sequential(
-            nn.Linear(400, 120),
+            nn.Linear(16 * 5 * 5, 120),
             nn.ReLU(),
             nn.Linear(120, 84),
             nn.ReLU(),

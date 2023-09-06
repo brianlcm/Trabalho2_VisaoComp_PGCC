@@ -7,7 +7,7 @@ import pandas as pd
 import seaborn as sb
 import torch
 import torch.nn.functional as F
-from torchvision import datasets
+from torchvision import datasets, transforms
 from torchvision.transforms import ToTensor
 from torch.utils.data import DataLoader
 
@@ -136,8 +136,8 @@ if __name__ == '__main__':
 
     model = 'LeNet' # LeNet, AlexNet, VGG
     dataset = 'CIFAR10' # FashionMNIST, CIFAR10
-    experiment = 2
-    path = os.path.join(os.getcwd(), 'experiments', model, dataset,'experiment-{}'.format(experiment))
+    experiment = 10
+    path = os.path.join(os.getcwd(), 'experiments', model, dataset, 'experiment-{}'.format(experiment))
 
     logger = Logger()
 
@@ -150,12 +150,36 @@ if __name__ == '__main__':
 
     restore(net, logger, path)
 
+    AlexTransform = transforms.Compose([
+        transforms.Resize((227, 227)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,))])
+    
+    # Define a transform to convert to images to tensor and normalize
+    transforms = transforms.Compose([transforms.ToTensor(),
+                                    transforms.RandomHorizontalFlip(),
+                                    transforms.RandomRotation(degrees=(30,60)),
+                                    transforms.Normalize((0.5,),(0.5,),)]) # mean and std have to be sequences (e.g., tuples), 
+                                                                        # therefore we should add a comma after the values
+
     if dataset == 'FashionMNIST':
-        test_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/test', train = False, download = False, transform = ToTensor())
-        test_loader = DataLoader(test_dataset)
+        if os.path.exists(os.path.join(os.getcwd(), 'datasets', 'FashionMNIST')):
+            train_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/train', train = True, download = False, transform = ToTensor())
+            test_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/test', train = False, download = False, transform = ToTensor())
+            test_loader = DataLoader(test_dataset)
+        else:
+            train_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/train', train = True, download = True, transform = ToTensor())
+            test_dataset = datasets.FashionMNIST(root='./datasets/FashionMNIST/test', train = False, download = True, transform = ToTensor())
+            test_loader = DataLoader(test_dataset)
     
     elif dataset == 'CIFAR10':
-        test_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/test', train = False, download = False, transform = ToTensor())
-        test_loader = DataLoader(test_dataset)
+        if os.path.exists(os.path.join(os.getcwd(), 'datasets', 'CIFAR10')):
+            train_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/train', train = True, download = False, transform = transforms)
+            test_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/test', train = False, download = False, transform = transforms)
+            test_loader = DataLoader(test_dataset)
+        else:
+            train_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/train', train = True, download = True, transform = ToTensor())
+            test_dataset = datasets.CIFAR10(root='./datasets/CIFAR10/test', train = False, download = True, transform = ToTensor())
+            test_loader = DataLoader(test_dataset)
 
     evaluate(net, test_loader, dataset)
