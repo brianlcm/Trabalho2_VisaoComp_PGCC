@@ -1,0 +1,10 @@
+/datasets/
+.idea/
+__pycache__/
+.ipynb_checkpoints/ 
+outputs/
+
+*.sh
+fer2013.csv
+*.pt
+sa-hist.csv
