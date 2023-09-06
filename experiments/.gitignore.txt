@@ -1,2 +1,2 @@
-AlexNet/**/*.pt
-VGG/**/*.pt
+**/AlexNet/**/*.pt
+**/VGG/**/*.pt
